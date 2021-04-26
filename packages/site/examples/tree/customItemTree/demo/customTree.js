@@ -10,8 +10,8 @@ G6.registerNode(
           stroke: '#666',
           x: 0,
           y: 0,
-          width: 1,
-          height: 1,
+          width:1,
+          height: 1
         },
         name: 'rect-shape',
       });
@@ -37,8 +37,8 @@ G6.registerNode(
       });
       text.attr({
         x: -bbox.width / 2,
-        y: 0,
-      });
+        y: 0
+      })
       if (hasChildren) {
         group.addShape('marker', {
           attrs: {

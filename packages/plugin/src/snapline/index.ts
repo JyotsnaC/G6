@@ -95,7 +95,7 @@ export default class SnapLine extends Base {
 
     const graph: IGraph = this.get('graph');
     const nodes = graph.getNodes();
-    nodes.forEach((item) => {
+    nodes.forEach(item => {
       const bbox = item.getBBox();
       const nodeId = item.get('id');
       // 设置水平方向辅助线
@@ -175,7 +175,7 @@ export default class SnapLine extends Base {
     let alignCfg = null;
     this.clearAlignLine();
 
-    each(horizontalLines, (line) => {
+    each(horizontalLines, line => {
       if (line[4].isVisible) {
         horizontalDis.push(this.getLineDisObject(line, tc));
         horizontalDis.push(this.getLineDisObject(line, cc));
@@ -183,7 +183,7 @@ export default class SnapLine extends Base {
       }
     });
 
-    each(verticalLines, (line) => {
+    each(verticalLines, line => {
       if (line[4].isVisible) {
         verticalDis.push(this.getLineDisObject(line, lc));
         verticalDis.push(this.getLineDisObject(line, cc));
@@ -246,7 +246,7 @@ export default class SnapLine extends Base {
 
     if (type === 'item') {
       if (horizontals) {
-        each(horizontals, (horizontal) => {
+        each(horizontals, horizontal => {
           const { line: refLine, point: refPoint } = horizontal;
           const lineCenterX = (refLine[0] + refLine[2]) / 2;
           let x1;
@@ -278,7 +278,7 @@ export default class SnapLine extends Base {
       }
 
       if (verticals) {
-        each(verticals, (vertical) => {
+        each(verticals, vertical => {
           const { line: refLine, point: refPoint } = vertical;
           const lineCenterY = (refLine[1] + refLine[3]) / 2;
           let y1;
@@ -339,7 +339,7 @@ export default class SnapLine extends Base {
    */
   clearAlignLine() {
     const { alignLines } = this._cfgs;
-    each(alignLines, (line) => {
+    each(alignLines, line => {
       line.remove();
     });
     alignLines.length = 0;
@@ -355,7 +355,7 @@ export default class SnapLine extends Base {
 
     const graph: IGraph = this.get('graph');
     const nodes = graph.getNodes();
-    nodes.forEach((node) => {
+    nodes.forEach(node => {
       const itemId = node.get('id');
       delete horizontalLines[`${itemId}tltr`];
       delete horizontalLines[`${itemId}lcrc`];

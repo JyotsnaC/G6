@@ -27,6 +27,7 @@ class G6Event extends Event {
   wheelDelta: number;
 }
 function createWheelEvent(delta, deltaX, deltaY) {
+
   const e = new G6Event('wheel', {});
   e.deltaX = deltaX;
   e.deltaY = deltaY;
@@ -78,7 +79,7 @@ describe('scroll-canvas', () => {
         default: [
           {
             type: 'scroll-canvas',
-            direction: 'x',
+            direction: 'x'
           },
         ],
       },
@@ -109,7 +110,7 @@ describe('scroll-canvas', () => {
         default: [
           {
             type: 'scroll-canvas',
-            direction: 'y',
+            direction: 'y'
           },
         ],
       },

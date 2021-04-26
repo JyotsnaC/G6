@@ -24,8 +24,7 @@ const graph = new G6.Graph({
   height: 600,
   defaultNode: {
     type: 'donut', // 节点类型
-    donutAttrs: {
-      // 甜甜圈字段，每个字段必须为 [key: string]: number
+    donutAttrs: {  // 甜甜圈字段，每个字段必须为 [key: string]: number
       prop1: 10,
       prop2: 20,
       prop3: 25,
@@ -123,13 +122,12 @@ const graph = new G6.Graph({
       stroke: '#eaff8f',
       lineWidth: 5,
     },
-    donutColorMap: {
-      // 指定色板
+    donutColorMap: { // 指定色板
       prop1: '#8eaade',
       prop2: '#55a9f2',
       prop3: '#0d47b5',
       prop5: '#7b8085',
-      prop6: '#003870',
+      prop6: '#003870'
     },
   },
 });

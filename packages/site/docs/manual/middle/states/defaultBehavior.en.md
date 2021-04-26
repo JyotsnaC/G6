@@ -102,17 +102,15 @@ const graph = new G6.Graph({
 
 - Description: Allows users drag canvas;
 - Configurations:
-
   - `type: 'drag-canvas'`;
   - `direction`: The direction of dragging that is allowed. Options: `'x'`, `'y'`, `'both'`. `'both'` by default;
   - `enableOptimize`: whether enable optimization, `false` by default. `enableOptimize: true` means hiding all edges and the shapes beside keyShapes of nodes while dragging canvas;
   - `shouldBegin(e)`: Whether allow the behavior happen on the current item (e.item);
-  - `scalableRange`: scalable range when drag canvas, `zero` by default. -1 to 1 means the scalable percentage of the viewport; the image bellow illustrate the situation when it is smaller than -1 or bigger than 1:
+  - `scalableRange`: scalable range when drag canvas, `zero` by default. -1 to 1 means the scalable percentage of the viewport; the image bellow illustrate the situation when it is smaller than -1 or bigger than 1: 
 
   <img src='https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*IFfoS67_HssAAAAAAAAAAAAAARQnAQ' width='650' alt="" />
 
   - `allowDragOnItem`: whether response when the users drag on items(node/edge/combo), `false` by default;
-
 - Related timing events:
   - `canvas:dragstart`: Triggered when drag start. Listened by `graph.on('canvas:dragstart', e => {...})`;
   - `canvas:drag`: Triggered when dragging. Listened by `graph.on('canvas:drag', e => {...})`;
@@ -147,16 +145,16 @@ const graph = new G6.Graph({
 
 The canvas can be dragged along x direction only.<br /><img src='https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*54yxRrW1A7sAAAAAAAAAAABkARQnAQ' width=400 alt='img'/>
 
+
 ### scroll-canvas
 
-- Description: Scroll the canvas by wheeling, _supported after v4.2.6_;
+- Description: Scroll the canvas by wheeling, *supported after v4.2.6*;
 - Configurations:
-
   - `type: 'scroll-canvas'`;
   - `direction`: The direction of dragging that is allowed. Options: `'x'`, `'y'`, `'both'`. `'both'` by default;
   - `enableOptimize`: whether enable optimization, `false` by default. `enableOptimize: true` means hiding all edges and the shapes beside keyShapes of nodes while dragging canvas;
   - `zoomKey`: switch to zooming while pressing the key and wheeling. Options: `'shift'`, `'ctrl'`, `'alt'`, `'control'`;
-  - `scalableRange`: scalable range when drag canvas, `zero` by default. -1 to 1 means the scalable percentage of the viewport; the image bellow illustrate the situation when it is smaller than -1 or bigger than 1:
+  - `scalableRange`: scalable range when drag canvas, `zero` by default. -1 to 1 means the scalable percentage of the viewport; the image bellow illustrate the situation when it is smaller than -1 or bigger than 1: 
 
   <img src='https://gw.alipayobjects.com/mdn/rms_f8c6a0/afts/img/A*IFfoS67_HssAAAAAAAAAAAAAARQnAQ' width='650' alt="" />
 
@@ -212,6 +210,7 @@ The canvas can be dragged along x direction only.<br /><img src='https://gw.alip
   - `wheelzoom(e)`: Triggered when user zoom the graph. Listened by `graph.on('wheelzoom', e => {...})`.
 
 **Tips: Assign values for `minZoom` and  `maxZoom` on the graph to limit the zooming ratio.**
+
 
 ### drag-node
 

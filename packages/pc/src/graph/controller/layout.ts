@@ -115,7 +115,7 @@ export default class LayoutController extends AbstractLayout {
       layoutCfg.onLayoutEnd = () => {
         graph.emit('aftersublayout', { type: layoutType });
         reslove();
-      };
+      }
 
       // 若用户指定开启 gpu，且当前浏览器支持 webgl，且该算法存在 GPU 版本（目前仅支持 fruchterman 和 gForce），使用 gpu 版本的布局
       if (layoutType && this.isGPU) {
@@ -185,7 +185,7 @@ export default class LayoutController extends AbstractLayout {
       layoutCfg.onLayoutEnd = () => {
         graph.emit('aftersublayout', { type: layoutType });
         reslove();
-      };
+      }
 
       const layoutData = this.filterLayoutData(this.data, layoutCfg);
       layoutMethod.init(layoutData);
@@ -290,16 +290,14 @@ export default class LayoutController extends AbstractLayout {
     }
 
     // 最后统一在外部调用onAllLayoutEnd
-    start
-      .then(() => {
-        if (layoutCfg.onAllLayoutEnd) layoutCfg.onAllLayoutEnd();
-        // 在执行 execute 后立即执行 success，且在 timeBar 中有 throttle，可以防止 timeBar 监听 afterrender 进行 changeData 后 layout，从而死循环
-        // 对于 force 一类布局完成后的 fitView 需要用户自己在 onLayoutEnd 中配置
-        if (success) success();
-      })
-      .catch((error) => {
-        console.warn('graph layout failed,', error);
-      });
+    start.then(() => {
+      if (layoutCfg.onAllLayoutEnd) layoutCfg.onAllLayoutEnd();
+      // 在执行 execute 后立即执行 success，且在 timeBar 中有 throttle，可以防止 timeBar 监听 afterrender 进行 changeData 后 layout，从而死循环
+      // 对于 force 一类布局完成后的 fitView 需要用户自己在 onLayoutEnd 中配置
+      if (success) success();
+    }).catch((error) => {
+      console.warn('graph layout failed,', error);
+    });
 
     return false;
   }
@@ -336,13 +334,11 @@ export default class LayoutController extends AbstractLayout {
     }
 
     // 最后统一在外部调用onAllLayoutEnd
-    start
-      .then(() => {
-        if (layoutCfg.onAllLayoutEnd) layoutCfg.onAllLayoutEnd();
-      })
-      .catch((error) => {
-        console.error('layout failed', error);
-      });
+    start.then(() => {
+      if (layoutCfg.onAllLayoutEnd) layoutCfg.onAllLayoutEnd();
+    }).catch((error) => {
+      console.error('layout failed', error);
+    });
 
     return true;
   }
@@ -366,7 +362,7 @@ export default class LayoutController extends AbstractLayout {
     // 例如：'function could not be cloned'。
     // 详情参考：https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
     // 所以这里需要把过滤layoutCfg里的函数字段过滤掉。
-    const filteredLayoutCfg = filterObject(layoutCfg, (value) => typeof value !== 'function');
+    const filteredLayoutCfg = filterObject(layoutCfg, value => typeof value !== 'function');
     if (!gpuWorkerAbility) {
       worker.postMessage({
         type: LAYOUT_MESSAGE.RUN,
@@ -491,13 +487,11 @@ export default class LayoutController extends AbstractLayout {
       });
     }
 
-    start
-      .then(() => {
-        if (layoutCfg.onAllLayoutEnd) layoutCfg.onAllLayoutEnd();
-      })
-      .catch((error) => {
-        console.warn('layout failed', error);
-      });
+    start.then(() => {
+      if (layoutCfg.onAllLayoutEnd) layoutCfg.onAllLayoutEnd();
+    }).catch((error) => {
+      console.warn('layout failed', error);
+    });
   }
 
   protected adjustPipesBox(data, adjust: string): Promise<void> {
@@ -508,9 +502,7 @@ export default class LayoutController extends AbstractLayout {
       }
 
       if (!LayoutPipesAdjustNames.includes(adjust)) {
-        console.warn(
-          `The adjust type ${adjust} is not supported yet, please assign it with 'force', 'grid', or 'circular'.`,
-        );
+        console.warn(`The adjust type ${adjust} is not supported yet, please assign it with 'force', 'grid', or 'circular'.` );
         resolve();
       }
 
@@ -518,7 +510,7 @@ export default class LayoutController extends AbstractLayout {
         center: this.layoutCfg.center,
         nodeSize: (d) => Math.max(d.height, d.width),
         preventOverlap: true,
-        onLayoutEnd: () => {},
+        onLayoutEnd: () => { },
       };
 
       // 计算出大单元
@@ -536,7 +528,7 @@ export default class LayoutController extends AbstractLayout {
           });
         });
         resolve();
-      };
+      }
 
       const layoutMethod = new Layout[adjust](layoutCfg);
       layoutMethod.layout({ nodes: layoutNodes });
@@ -582,7 +574,7 @@ function updateLayoutPosition(data, layoutData) {
 function filterObject(collection, callback) {
   const result = {};
   if (collection && typeof collection === 'object') {
-    Object.keys(collection).forEach((key) => {
+    Object.keys(collection).forEach(key => {
       if (collection.hasOwnProperty(key) && callback(collection[key])) {
         result[key] = collection[key];
       }
@@ -611,7 +603,7 @@ function addLayoutOrder(data, order) {
     return;
   }
   const { nodes } = data;
-  nodes.forEach((node) => {
+  nodes.forEach(node => {
     node.layoutOrder = order;
   });
 }

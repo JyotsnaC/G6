@@ -208,10 +208,7 @@ const graph = new G6.Graph({
   defaultNode: {
     size: [60, 30],
     type: 'rect',
-    anchorPoints: [
-      [0.5, 0],
-      [0.5, 1],
-    ],
+    anchorPoints: [[0.5, 0], [0.5, 1]]
   },
   defaultEdge: {
     type: 'line',
@@ -226,7 +223,7 @@ const graph = new G6.Graph({
 graph.data(data);
 graph.render();
 
-console.log('comboTrees', graph.get('comboTrees'));
+console.log('comboTrees', graph.get('comboTrees'))
 
 if (typeof window !== 'undefined')
   window.onresize = () => {

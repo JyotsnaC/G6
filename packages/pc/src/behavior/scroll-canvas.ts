@@ -43,12 +43,12 @@ export default {
     } else {
       let dx = ev.deltaX || ev.movementX;
       let dy = ev.deltaY || ev.movementY;
-      if (!dy && navigator.userAgent.indexOf('Firefox') > -1) dy = (-ev.wheelDelta * 125) / 3;
-
+      if (!dy && navigator.userAgent.indexOf('Firefox') > -1) dy = (-ev.wheelDelta * 125) / 3
+      
       const width = this.graph.get('width');
       const height = this.graph.get('height');
       const graphCanvasBBox = this.graph.get('canvas').getCanvasBBox();
-
+  
       let expandWidth = this.scalableRange;
       let expandHeight = this.scalableRange;
       // 若 scalableRange 是 0~1 的小数，则作为比例考虑
@@ -60,27 +60,30 @@ export default {
       if (
         (graphCanvasBBox.minX <= width + expandWidth &&
           graphCanvasBBox.minX + dx > width + expandWidth) ||
-        (graphCanvasBBox.maxX + expandWidth >= 0 && graphCanvasBBox.maxX + expandWidth + dx < 0)
+        (graphCanvasBBox.maxX + expandWidth >= 0 &&
+          graphCanvasBBox.maxX + expandWidth + dx < 0)
       ) {
         dx = 0;
       }
       if (
         (graphCanvasBBox.minY <= height + expandHeight &&
           graphCanvasBBox.minY + dy > height + expandHeight) ||
-        (graphCanvasBBox.maxY + expandHeight >= 0 && graphCanvasBBox.maxY + expandHeight + dy < 0)
+        (graphCanvasBBox.maxY + expandHeight >= 0 &&
+          graphCanvasBBox.maxY + expandHeight + dy < 0)
       ) {
         dy = 0;
       }
-
+  
       if (this.get('direction') === 'x') {
         dy = 0;
       } else if (this.get('direction') === 'y') {
         dx = 0;
       }
-
+      
       graph.translate(-dx, -dy);
     }
     ev.preventDefault();
+
 
     // hide the shapes when the zoom ratio is smaller than optimizeZoom
     // hide the shapes when zoomming

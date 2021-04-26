@@ -23,9 +23,8 @@ const graph = new G6.Graph({
   width: 800,
   height: 600,
   defaultNode: {
-    type: 'donut', // The type of the
-    donutAttrs: {
-      // The attributes show on the donut chart. Each attribute has format [key: string]: number
+    type: 'donut', // The type of the 
+    donutAttrs: {  // The attributes show on the donut chart. Each attribute has format [key: string]: number
       prop1: 10,
       prop2: 20,
       prop3: 25,
@@ -52,8 +51,7 @@ const data = {
     {
       id: 'node0',
       type: 'donut', // The tyep of the node
-      donutAttrs: {
-        // The attributes show on the donut chart. Each attribute has format [key: string]: number
+      donutAttrs: {  // The attributes show on the donut chart. Each attribute has format [key: string]: number
         prop1: 10,
         prop2: 20,
         prop3: 25,
@@ -124,13 +122,12 @@ const graph = new G6.Graph({
       stroke: '#eaff8f',
       lineWidth: 5,
     },
-    donutColorMap: {
-      // the color palette
+    donutColorMap: { // the color palette
       prop1: '#8eaade',
       prop2: '#55a9f2',
       prop3: '#0d47b5',
       prop5: '#7b8085',
-      prop6: '#003870',
+      prop6: '#003870'
     },
   },
 });

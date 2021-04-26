@@ -192,16 +192,16 @@ graph.on(timingEventName, evt => {
 
 TimeBar plugin:
 
-| Event Name       | Description                                            |
-| ---------------- | ------------------------------------------------------ |
-| valuechange      | Emitted when the value range of the timebar is chaged. |
-| timebarstartplay | Emitted when the timeline starts to play.              |
-| timebarendplay   | Emitted when the timeline ends playing.                |
+| Event Name | Description |
+| --- | --- |
+| valuechange | Emitted when the value range of the timebar is chaged. |
+| timebarstartplay | Emitted when the timeline starts to play. |
+| timebarendplay | Emitted when the timeline ends playing. |
 
 Tooltip:
 
-| Event Name    | Description                          |
-| ------------- | ------------------------------------ |
+| Event Name | Description |
+| --- | --- |
 | tooltipchange | Emitted when the Tooltip is changed. |
 
 ### Callback Parameters
@@ -314,10 +314,10 @@ No parameters.
 
 #### beforecollapseexpandcombo / aftercollapseexpandcombo
 
-| Name   | Type   | Description                            |
-| ------ | ------ | -------------------------------------- |
+| Name | Type | Description      |
+| ---- | ---- | ---------------- |
 | action | string | The action, `'collapse'` or `'expand'` |
-| combo  | Item   | The manipulated combo                  |
+| combo | Item | The manipulated combo |
 
 #### itemcollapsed
 
@@ -364,8 +364,8 @@ No parameters.
 
 #### valuechange
 
-| Name  | Type     | Description                                                                 |
-| ----- | -------- | --------------------------------------------------------------------------- |
+| Name      | Type     | Description     |
+| --------- | -------- | -------- |
 | value | number[] | The current value range, `value[0]` is the start and `value[1]` is the end. |
 
 #### timelinestart / timelineend
@@ -374,7 +374,7 @@ No parameters.
 
 #### tooltipchange
 
-| Name   | Type            | Description                                          |
-| ------ | --------------- | ---------------------------------------------------- |
-| item   | Item            | The item the tooltip related to (a node or an edge). |
-| action | 'show' / 'hide' | The current action.                                  |
+| Name      | Type     | Description     |
+| --------- | -------- | -------- |
+| item | Item | The item the tooltip related to (a node or an edge). |
+| action | 'show' / 'hide' | The current action. |

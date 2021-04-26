@@ -9,7 +9,8 @@ There's no special settings or differences to use G6 in Angular if you just star
 
 However, if your application is upgraded from older angular version (for example, my project is from angular 6), you may run into trouble.
 
-If you see `cannot read property 'webpackChunkAlgorithm'` error like following picture shows ![image](https://user-images.githubusercontent.com/12276316/110507994-8e108e00-80ce-11eb-9f40-653f2181e44b.png)
+If you see `cannot read property 'webpackChunkAlgorithm'` error like following picture shows
+![image](https://user-images.githubusercontent.com/12276316/110507994-8e108e00-80ce-11eb-9f40-653f2181e44b.png)
 
 Please refer to https://github.com/antvis/G6/issues/2691 for solution
 

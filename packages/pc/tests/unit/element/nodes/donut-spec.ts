@@ -37,7 +37,7 @@ describe('donut test', () => {
         style: {
           // ... 文本样式的配置
         },
-      },
+      }
     },
   };
   const graph = new Graph(cfg);
@@ -61,7 +61,7 @@ describe('donut test', () => {
             prop2: '#55a9f2',
             prop3: '#0d47b5',
             prop5: '#7b8085',
-            prop6: '#003870',
+            prop6: '#003870'
           },
         },
       ],
@@ -70,6 +70,7 @@ describe('donut test', () => {
     graph.render();
 
     const donutGroup = graph.getNodes()[0].getContainer();
-    expect(donutGroup.get('children').length).toBe(12);
+    expect(donutGroup.get('children').length).toBe(12)
+    
   });
 });

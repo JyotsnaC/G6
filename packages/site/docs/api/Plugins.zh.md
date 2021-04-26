@@ -38,10 +38,11 @@ SnapLine G6 内置的对齐线插件。
 
 ### 配置项
 
-| 名称          | 类型                                          | 描述                      |
-| ------------- | --------------------------------------------- | ------------------------- |
-| line          | ShapeStyle                                    | 辅助线的样式              |
+| 名称 | 类型 | 描述 |
+| --- | --- | --- |
+| line | ShapeStyle | 辅助线的样式 |
 | itemAlignType | boolean、'horizontal' 、'vertical'、'center'; | 辅助线类型，true 表示全部 |
+
 
 ## Grid
 
@@ -431,8 +432,8 @@ const graph = new G6.Graph({
 
 Tooltip 插件暴露除了几个时机事件，方便用户监听内部状态的变化。以下事件可通过 `graph.on('eventname', e => {})` 进行监听。
 
-| 事件名称      | 描述                   |
-| ------------- | ---------------------- |
+| 事件名称 | 描述 |
+| --- | --- |
 | tooltipchange | Tooltip 发生变化时触发 |
 
 ## Fisheye
@@ -637,11 +638,11 @@ const timebar = new G6.TimeBar({
 
 TimeBar 插件暴露除了几个时机事件，方便用户监听内部状态的变化。以下事件可通过 `graph.on('eventname', e => {})` 进行监听。
 
-| 事件名称         | 描述                           |
-| ---------------- | ------------------------------ |
-| valuechange      | 时间轴的时间范围发生变化时触发 |
-| timebarstartplay | 时间轴开始播放时触发           |
-| timebarendplay   | 时间轴播放结束时触发           |
+| 事件名称 | 描述 |
+| --- | --- |
+| valuechange | 时间轴的时间范围发生变化时触发 |
+| timebarstartplay | 时间轴开始播放时触发 |
+| timebarendplay | 时间轴播放结束时触发 |
 
 ### 参数定义
 
@@ -824,6 +825,7 @@ export interface TimeBarSliceOption {
 | data                   | any[]             | []     | 必选，刻度时间轴的刻度数据     |
 | tickLabelFormatter     | Function          | null   | 刻度的格式化回调函数           |
 | tooltipFomatter        | Function          | null   | tooltip 上内容格式化的回调函数 |
+
 
 #### TickCfg 接口定义
 

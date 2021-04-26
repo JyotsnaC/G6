@@ -57,7 +57,7 @@ export default class Graph extends AbstractGraph implements IGraph {
       throw new Error('invalid container');
     }
 
-    const { clientWidth, clientHeight } = container;
+    const { clientWidth, clientHeight } = container
     const width: number = this.get('width') || clientWidth;
     const height: number = this.get('height') || clientHeight;
     const renderer: string = this.get('renderer');
@@ -97,26 +97,21 @@ export default class Graph extends AbstractGraph implements IGraph {
   }
 
   /**
-   * 增加图片下载水印功能
-   */
-  protected async downloadImageWatermark(
-    watermarker: HTMLElement,
-    context: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-  ) {
+  * 增加图片下载水印功能
+  */
+  protected async downloadImageWatermark(watermarker: HTMLElement, context: CanvasRenderingContext2D, width: number, height: number) {
     const watermarkStr = watermarker.style.backgroundImage;
     const watermarkbase64 = watermarkStr.slice(5, watermarkStr.length - 2);
     const img = new Image();
     img.src = watermarkbase64;
     await new Promise((resolve) => {
       img.onload = () => {
-        const pat = context.createPattern(img, 'repeat');
+        const pat = context.createPattern(img, "repeat");
         context.rect(0, 0, width, height);
         context.fillStyle = pat;
         context.fill();
         resolve('');
-      };
+      }
     });
   }
 
@@ -126,14 +121,7 @@ export default class Graph extends AbstractGraph implements IGraph {
    * @param {string} backgroundColor 图片背景色
    * @return {string} 图片 dataURL
    */
-  protected asyncToDataUrl(
-    type?: DataUrlType,
-    backgroundColor?: string,
-    callback?: Function,
-    widths?: number,
-    heights?: number,
-    vCanvasEl?: any,
-  ): void {
+  protected asyncToDataUrl(type?: DataUrlType, backgroundColor?: string, callback?: Function, widths?: number, heights?: number, vCanvasEl?: any): void {
     const watermarker = document.querySelector('.g6-graph-watermarker') as HTMLElement;
     const canvas: GCanvas = this.get('canvas');
     const renderer = canvas.getRenderer();
@@ -180,8 +168,8 @@ export default class Graph extends AbstractGraph implements IGraph {
           context.globalCompositeOperation = compositeOperation;
         }
       }
-      if (callback) callback(dataURL);
-    }, 16);
+      if (callback) callback(dataURL)
+    }, 16)
   }
 
   /**
@@ -387,24 +375,18 @@ export default class Graph extends AbstractGraph implements IGraph {
     const vCanvasEl = vCanvas.get('el');
 
     if (!type) type = 'image/png';
-    this.asyncToDataUrl(
-      type,
-      backgroundColor,
-      (dataURL) => {
-        const link: HTMLAnchorElement = document.createElement('a');
-        const fileName: string =
-          (name || 'graph') + (renderer === 'svg' ? '.svg' : `.${type.split('/')[1]}`);
+    this.asyncToDataUrl(type, backgroundColor, (dataURL) => {
 
-        this.dataURLToImage(dataURL, renderer, link, fileName);
+      const link: HTMLAnchorElement = document.createElement('a');
+      const fileName: string =
+        (name || 'graph') + (renderer === 'svg' ? '.svg' : `.${type.split('/')[1]}`);
 
-        const e = document.createEvent('MouseEvents');
-        e.initEvent('click', false, false);
-        link.dispatchEvent(e);
-      },
-      vWidth,
-      vHeight,
-      vCanvasEl,
-    );
+      this.dataURLToImage(dataURL, renderer, link, fileName);
+
+      const e = document.createEvent('MouseEvents');
+      e.initEvent('click', false, false);
+      link.dispatchEvent(e);
+    }, vWidth, vHeight, vCanvasEl)
   }
 
   /**

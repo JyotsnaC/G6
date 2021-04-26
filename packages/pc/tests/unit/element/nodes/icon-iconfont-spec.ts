@@ -24,20 +24,14 @@ describe('icon with iconfont', () => {
           icon: {
             show: true,
             img: undefined,
-            text: 'xxx',
-          },
+            text: 'xxx'
+          }
         },
       ],
     };
     graph.data(data);
     graph.render();
 
-    expect(
-      graph
-        .getNodes()[0]
-        .get('group')
-        .find((e) => e.get('name') === 'circle-icon')
-        .attr('text'),
-    ).toBe('xxx');
+    expect(graph.getNodes()[0].get('group').find(e => e.get('name') === 'circle-icon').attr('text')).toBe('xxx');
   });
 });
