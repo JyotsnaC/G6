@@ -12,8 +12,8 @@ describe('edge label with background', () => {
       height: 500,
       defaultNode: {
         style: {
-          opacity: 0,
-        },
+          opacity: 0
+        }
       },
       defaultEdge: {
         type: 'line',
@@ -35,16 +35,13 @@ describe('edge label with background', () => {
     });
 
     graph.read({
-      nodes: [
-        { id: '1', x: 100, y: 100 },
-        { id: '2', x: 100, y: 100 },
-      ],
+      nodes: [{ id: '1', x: 100, y: 100 }, { id: '2', x: 100, y: 100 }],
       edges: [{ source: '1', target: '2', label: 'abc' }],
     });
 
     const edge = graph.getEdges()[0];
     const group = edge.getContainer();
-    const bgRect = group.find((e) => e.get('name') === 'text-bg-shape');
+    const bgRect = group.find(e => e.get('name') === 'text-bg-shape');
     expect(Math.abs(bgRect.attr('x') - 86) < 1).toBe(true);
     expect(Math.abs(bgRect.attr('y') - 91) < 2).toBe(true);
     expect(Math.abs(bgRect.attr('width') - 27) < 3).toBe(true);

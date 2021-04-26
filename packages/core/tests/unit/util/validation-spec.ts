@@ -133,10 +133,7 @@ describe('dataValidation', () => {
         { id: '2', label: '2', comboId: 'Combo' },
         { id: '3', label: '3' },
       ],
-      edges: [
-        { source: '1', target: '2' },
-        { source: 'Combo', target: '3' },
-      ],
+      edges: [{ source: '1', target: '2' }, { source: 'Combo', target: '3' }],
       combos: [{ id: 'Combo', label: 'Combo' }],
     };
     const validated = dataValidation(data);

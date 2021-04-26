@@ -75,7 +75,7 @@ describe('issues', () => {
     graph.createCombo('combo1', ['node1', 'node2']);
     const combo = graph.getCombos();
     expect(combo.length).toBe(1);
-    const comboIds = graph.getNodes().map((node) => node.getModel().comboId);
+    const comboIds = graph.getNodes().map(node => node.getModel().comboId);
     expect(comboIds).toEqual(['combo1', 'combo1']);
   });
 
@@ -100,14 +100,14 @@ describe('issues', () => {
     graph.render();
 
     graph.createCombo('combo1', ['node1', 'node2', 'combo']);
-    const comboIds = graph.getNodes().map((node) => node.getModel().comboId);
+    const comboIds = graph.getNodes().map(node => node.getModel().comboId);
     // combo1中包含两个节点
     expect(comboIds).toEqual(['combo1', 'combo1']);
 
     // id 为 combo 的 combo 中应该添加一个 parentId，值为 combo1
     const comboItems = graph.getCombos();
     expect(comboItems.length).toBe(2);
-    const current = comboItems.filter((combo) => combo.getModel().parentId);
+    const current = comboItems.filter(combo => combo.getModel().parentId);
     expect(current.length).toBe(1);
     expect(current[0].getModel().parentId).toEqual('combo1');
   });

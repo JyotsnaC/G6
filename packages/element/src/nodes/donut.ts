@@ -6,7 +6,7 @@ import {
   ShapeStyle,
   ShapeOptions,
   BaseGlobal as Global,
-  Util,
+  Util
 } from '@antv/g6-core';
 import { deepMix, isNumber, isArray } from '@antv/util';
 
@@ -68,7 +68,7 @@ registerNode(
         attrs: style,
         className: `${this.type}-keyShape`,
         draggable: true,
-        name: `${this.type}-keyShape`,
+        name: `${this.type}-keyShape`
       });
 
       const { width, height, show, text } = icon;
@@ -162,7 +162,10 @@ registerNode(
             beginAngle += attr.angle;
             attr.endAngle = beginAngle;
             attr.arcBegin = arcBegin;
-            attr.arcEnd = [arcR * Math.cos(attr.endAngle), -arcR * Math.sin(attr.endAngle)];
+            attr.arcEnd = [
+              arcR * Math.cos(attr.endAngle),
+              -arcR * Math.sin(attr.endAngle),
+            ];
             const isBig = attr.angle > Math.PI ? 1 : 0;
             const path = [
               ['M', attr.arcBegin[0], attr.arcBegin[1]],
@@ -186,7 +189,7 @@ registerNode(
 
       return keyShape;
     },
-    update: undefined,
+    update: undefined
   },
   'circle',
 );

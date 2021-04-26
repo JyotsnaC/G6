@@ -490,7 +490,8 @@ export const getPolylinePoints = (
 
   if (!tNode || !tNode.getType()) {
     tBBox = getBBoxFromPoint(end);
-  } else if (tNode.getType() === 'combo') {
+  }
+  else if (tNode.getType() === 'combo') {
     const tKeyShapeBBox = tNode.getKeyShape().getBBox();
     if (tKeyShapeBBox) {
       const { x: tx, y: ty } = tNode.getModel();
@@ -503,13 +504,14 @@ export const getPolylinePoints = (
         maxX: tKeyShapeBBox.maxX + tx,
         minY: tKeyShapeBBox.minY + ty,
         maxY: tKeyShapeBBox.maxY + ty,
-      };
+      }
       tBBox.centerX = (tBBox.minX + tBBox.maxX) / 2;
       tBBox.centerY = (tBBox.minY + tBBox.maxY) / 2;
     } else {
-      tBBox = getBBoxFromPoint(end) as PBBox;
+      tBBox = getBBoxFromPoint(end) as PBBox
     }
-  } else {
+  }
+  else {
     tBBox = tNode && tNode.getBBox();
   }
 

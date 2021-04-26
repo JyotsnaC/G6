@@ -187,11 +187,12 @@ registerEdge(
         return pathArray;
       }
 
+
       // 未指定控制点
       const polylinePoints = simple
         ? getPolylinePoints(points[points.length - 1], points[0], target, source, offset)
         : pathFinder(points[0], points[points.length - 1], source, target, routeCfg);
-
+      
       if (!polylinePoints || !polylinePoints.length) return 'M0 0, L0 0';
 
       if (radius) {
