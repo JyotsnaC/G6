@@ -277,7 +277,7 @@ describe('drag-node', () => {
     expect(matrix[6]).toEqual(150);
     expect(matrix[7]).toEqual(150);
     graph.destroy();
-    }, 50);
+  }, 50);
 
   it('delegate drag node with edge', () => {
     const graph = new Graph({
@@ -313,7 +313,7 @@ describe('drag-node', () => {
       type: 'rect',
       style: { lineWidth: 2, fill: '#666', opacity: 0.1 },
     });
-    const edge = graph.addItem('edge', { source, target });
+    const edge = graph.addItem('edge', { source: 'source', target: 'target' });
 
     let path = edge.get('group').get('children')[0].attr('path');
     expect(path[0][1]).toEqual(57.77817459305202);
@@ -399,8 +399,8 @@ describe('drag-node', () => {
       style: { lineWidth: 2, fill: '#666' },
     });
     const edge = graph.addItem('edge', {
-      source,
-      target,
+      source: 'source',
+      target: 'target',
       label: 'test label',
       labelCfg: { autoRotate: true },
     });
@@ -564,8 +564,8 @@ describe('drag-node', () => {
       style: { lineWidth: 2, fill: '#666' },
     });
     const edge = graph.addItem('edge', {
-      source: src,
-      target,
+      source: 'source',
+      target: 'target',
       label: 'test label',
       labelCfg: { autoRotate: true },
     });
@@ -825,15 +825,15 @@ describe('drag-node', () => {
   it('drop on node, drop on combo', () => {
     const mockData = {
       nodes: [
-        { id: "4988e9a7", label: "分支节点1", comboId: "c8578297", x: 300, y: 100 },
-        { id: "915e9146", label: "分支节点2", comboId: "c8578297", x: 100, y: 300 },
-        { id: "915e9147", label: "分支节点3", comboId: "c8578298", x: 500, y: 200 }
+        { id: '4988e9a7', label: '分支节点1', comboId: 'c8578297', x: 300, y: 100 },
+        { id: '915e9146', label: '分支节点2', comboId: 'c8578297', x: 100, y: 300 },
+        { id: '915e9147', label: '分支节点3', comboId: 'c8578298', x: 500, y: 200 },
       ],
-      edges: [{ id: "1a29578f", source: "4988e9a7", target: "915e9146" }],
+      edges: [{ id: '1a29578f', source: '4988e9a7', target: '915e9146' }],
       combos: [
-        { id: "c8578297", label: "测试分组a" },
-        { id: "c8578298", label: "测试分组b" }
-      ]
+        { id: 'c8578297', label: '测试分组a' },
+        { id: 'c8578298', label: '测试分组b' },
+      ],
     };
 
     const g6 = new Graph({
@@ -843,25 +843,25 @@ describe('drag-node', () => {
       modes: {
         default: [
           {
-            type: "drag-combo",
+            type: 'drag-combo',
             onlyChangeComboSize: true,
-            enableDelegate: true
+            enableDelegate: true,
           },
           {
-            type: "drag-node",
+            type: 'drag-node',
             onlyChangeComboSize: true,
-            enableDelegate: true
+            enableDelegate: true,
           },
-          "drag-canvas",
-          "zoom-canvas"
-        ]
+          'drag-canvas',
+          'zoom-canvas',
+        ],
       },
-      defaultNode: { type: "rect" },
+      defaultNode: { type: 'rect' },
       layout: {
-        type: "dagre"
-      }
+        type: 'dagre',
+      },
     });
     g6.data(mockData);
     g6.render();
-  })
+  });
 });

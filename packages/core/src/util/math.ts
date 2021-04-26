@@ -1,5 +1,5 @@
 import { Point, IGroup } from '@antv/g-base';
-import { mat3, vec3, ext } from '@antv/matrix-util';
+import { mat3, vec3, ext, vec2 } from '@antv/matrix-util';
 import { isArray, each } from '@antv/util';
 import {
   GraphData,
@@ -780,4 +780,26 @@ export const pointRectSquareDist = (point: Point, rect: IRect) => {
   const dx = Math.min(Math.abs(rect.x - point.x), Math.abs(rect.x + rect.width - point.x));
   const dy = Math.min(Math.abs(rect.y - point.y), Math.abs(rect.y + rect.height - point.y));
   return dx * dx + dy * dy;
+};
+
+/**
+ * point to line distance
+ * @param  {array} line 线的四个顶点 [x1, y1, x2, y2]
+ * @param  {object} point 坐标点 {x, y}
+ * @return {Number|NaN} distance
+ */
+export const pointLineDistance = (line, point) => {
+  const [x1, y1, x2, y2] = line;
+  const { x, y } = point;
+  const d = [x2 - x1, y2 - y1];
+  if (vec2.exactEquals(d as any, [0, 0])) {
+    return NaN;
+  }
+
+  const u = [-d[1], d[0]];
+  // @ts-ignore
+  vec2.normalize(u, u);
+  const a = [x - x1, y - y1];
+  // @ts-ignore
+  return Math.abs(vec2.dot(a, u));
 };

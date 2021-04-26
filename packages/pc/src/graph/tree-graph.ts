@@ -120,8 +120,8 @@ export default class TreeGraph extends Graph implements ITreeGraph {
       self.addItem(
         'edge',
         {
-          source: parent,
-          target: node,
+          source: parent.get('id'),
+          target: node.get('id'),
           id: `${parent.get('id')}:${node.get('id')}`,
         },
         false,

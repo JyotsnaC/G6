@@ -31,6 +31,7 @@ import {
   IG6GraphEvent,
 } from '../types';
 import { move } from '../util/math';
+import { dataValidation, singleDataValidation } from '../util/validation';
 import Global from '../global';
 import { ItemController, ModeController, StateController, ViewController } from './controller';
 import { plainCombosToTrees, traverseTree, reconstructTree, traverseTreeUp } from '../util/graphic';
@@ -158,7 +159,6 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
         id: `${id}-node`,
         className: Global.nodeContainerClassName,
       });
-
       const comboGroup: IGroup = group.addGroup({
         id: `${id}-combo`,
         className: Global.comboContainerClassName,
@@ -783,7 +783,7 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
     return {
       x: (bbox.minX + bbox.maxX) / 2,
       y: (bbox.minY + bbox.maxY) / 2,
-    }
+    };
   }
 
   /**
@@ -974,6 +974,11 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
     this.set('comboSorted', currentComboSorted && !sortCombo);
     const itemController: ItemController = this.get('itemController');
 
+    // 添加节点、边或combo之前，先验证数据是否符合规范
+    if (!singleDataValidation(type, model)) {
+      return false;
+    }
+
     if (model.id && this.findById(model.id as string)) {
       console.warn(
         `This item exists already. Be sure the id %c${model.id}%c is unique.`,
@@ -1029,9 +1034,8 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
       const parentCombo = this.findById(model.comboId as string);
       if (parentCombo && parentCombo.getType && parentCombo.getType() !== 'combo') {
         console.warn(
-          `'${model.comboId}' is a not id of a combo in the graph, the node will be added without combo.`,
+          `'${model.comboId}' is not a id of a combo in the graph, the node will be added without combo.`,
         );
-        return;
       }
       item = itemController.addItem(type, model);
 
@@ -1071,7 +1075,8 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
       const parentCombo = this.findById(
         (model.comboId as string) || (model.parentId as string),
       ) as ICombo;
-      if (parentCombo) parentCombo.addChild(item);
+      if (parentCombo && parentCombo.getType && parentCombo.getType() === 'combo')
+        parentCombo.addChild(item);
     }
 
     const combos = this.get('combos');
@@ -1238,6 +1243,7 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
    * @param {GraphData} data 初始化数据
    */
   public data(data?: GraphData | TreeGraphData): void {
+    dataValidation(data);
     this.set('data', data);
   }
 
@@ -1391,7 +1397,7 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
    */
   public changeData(data?: GraphData | TreeGraphData, stack: boolean = true): AbstractGraph {
     const self = this;
-    if (!data) {
+    if (!dataValidation(data)) {
       return this;
     }
     if (stack && this.get('enabledStack')) {
@@ -1531,8 +1537,10 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
       comboConfig = combo;
     }
 
+    // step2: 更新 children，根据类型添加 comboId 或 parentId
     const trees: ComboTree[] = children.map((elementId) => {
       const item = this.findById(elementId);
+      const model = item.getModel();
 
       let type = '';
       if (item.getType) type = item.getType();
@@ -1543,8 +1551,10 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
 
       if (type === 'combo') {
         (cItem as ComboConfig).parentId = comboId;
+        model.parentId = comboId;
       } else if (type === 'node') {
         (cItem as NodeConfig).comboId = comboId;
+        model.comboId = comboId;
       }
 
       return cItem;
@@ -1552,11 +1562,11 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
 
     comboConfig.children = trees;
 
-    // step 2: 添加 Combo，addItem 时会将子将元素添加到 Combo 中
+    // step 3: 添加 Combo，addItem 时会将子将元素添加到 Combo 中
     this.addItem('combo', comboConfig, false);
     this.set('comboSorted', false);
 
-    // step3: 更新 comboTrees 结构
+    // step4: 更新 comboTrees 结构
     const comboTrees = this.get('comboTrees');
     (comboTrees || []).forEach((ctree) => {
       traverseTreeUp<ComboTree>(ctree, (child) => {
@@ -1655,7 +1665,8 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
       treeToBeUncombo.children.forEach((child) => {
         child.parentId = undefined;
         const childModel = this.findById(child.id).getModel();
-        childModel.parentId = undefined; // update the parentId of the model
+        delete childModel.parentId; // update the parentId of the model
+        delete childModel.comboId; // update the comboId of the model
         if (child.itemType !== 'node') comboTrees.push(child);
       });
     }
@@ -2084,7 +2095,7 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
     let model: NodeConfig;
 
     const updatedNodes: { [key: string]: boolean } = {};
-    const nodeChangeMap = {};
+
     each(nodes, (node: INode) => {
       model = node.getModel() as NodeConfig;
       const originAttrs = node.get('originAttrs');
@@ -2102,13 +2113,18 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
 
     each(edges, (edge: IEdge) => {
       const sourceModel = edge.getSource().getModel();
-      const targetModel = edge.getTarget().getModel();
-      if (
-        updatedNodes[sourceModel.id as string] ||
-        updatedNodes[targetModel.id as string] ||
-        edge.getModel().isComboEdge
-      ) {
-        edge.refresh();
+      const target = edge.getTarget();
+      // 避免 target 是纯对象的情况下调用 getModel 方法
+      // 拖动生成边的时候 target 会是纯对象
+      if (!isPlainObject(target)) {
+        const targetModel = (target as INode | ICombo).getModel();
+        if (
+          updatedNodes[sourceModel.id as string] ||
+          updatedNodes[targetModel.id as string] ||
+          edge.getModel().isComboEdge
+        ) {
+          edge.refresh();
+        }
       }
     });
 
@@ -2193,7 +2209,10 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
     Object.assign(layoutCfg, oriLayoutCfg, cfg);
     this.set('layout', layoutCfg);
 
-    if (layoutController.isLayoutTypeSame(layoutCfg) && (layoutCfg.gpuEnabled === oriLayoutCfg.gpuEnabled)) {
+    if (
+      layoutController.isLayoutTypeSame(layoutCfg) &&
+      layoutCfg.gpuEnabled === oriLayoutCfg.gpuEnabled
+    ) {
       // no type or same type, or switch the gpu and cpu, update layout
       layoutController.updateLayoutCfg(layoutCfg);
     } else {
@@ -2258,25 +2277,13 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
     let ccombos = [];
     const comboTrees = this.get('comboTrees');
     let found = false;
-    let brothers = {};
-    (comboTrees || []).forEach((ctree) => {
-      brothers[ctree.id] = ctree;
-    });
     (comboTrees || []).forEach((ctree) => {
       if (found) return; // if the combo is found, terminate the forEach
       traverseTree(ctree, (subTree) => {
-        // if the combo is found and the it is traversing the other brothers, terminate
-        if (found && brothers[subTree.id]) return false;
-        if (comboModel.parentId === subTree.id) {
-          // if the parent is found, store the brothers
-          brothers = {};
-          subTree.children.forEach((child) => {
-            brothers[child.id] = child;
-          });
-        } else if (comboModel.id === subTree.id) {
-          // if the combo is found
-          found = true;
-        }
+        // if the combo is found and it is traversing the other branches, terminate
+        if (found && subTree.depth <= comboModel.depth) return false;
+        // if the combo is found
+        if (comboModel.id === subTree.id) found = true;
         if (found) {
           // if the combo is found, concat the descendant nodes and combos
           const item = this.findById(subTree.id) as ICombo;
@@ -2416,24 +2423,12 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
     let ccombos = [];
     const comboTrees = this.get('comboTrees');
     let found = false;
-    let brothers = {};
-    (comboTrees || []).forEach((ctree) => {
-      brothers[ctree.id] = ctree;
-    });
     (comboTrees || []).forEach((ctree) => {
       if (found) return; // if the combo is found, terminate
       traverseTree(ctree, (subTree) => {
-        if (found && brothers[subTree.id]) {
-          return false;
-        }
-        if (comboModel.parentId === subTree.id) {
-          brothers = {};
-          subTree.children.forEach((child) => {
-            brothers[child.id] = child;
-          });
-        } else if (comboModel.id === subTree.id) {
-          found = true;
-        }
+        // if the combo is found and it is traversing the other branches, terminate
+        if (found && subTree.depth <= comboModel.depth) return false;
+        if (comboModel.id === subTree.id) found = true;
         if (found) {
           const item = this.findById(subTree.id) as ICombo;
           if (item && item.getType && item.getType() === 'combo') {
@@ -2611,7 +2606,7 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
     if (isString(combo)) {
       combo = this.findById(combo) as ICombo;
     }
-    if (combo.getType && combo.getType() !== 'combo') return;
+    if (!combo || (combo.getType && combo.getType() !== 'combo')) return;
 
     const comboModel = combo.getModel();
 
@@ -2699,7 +2694,7 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
   public getNodeDegree(
     node: string | INode,
     type: 'in' | 'out' | 'total' | 'all' | undefined = undefined,
-    refresh: boolean = false
+    refresh: boolean = false,
   ): Number | Object {
     let item = node as INode;
     if (isString(node)) {
@@ -2715,7 +2710,7 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
     let res = 0;
     // 如果是通过 addItem 后面新增加的节点，此时它的所有度数都为 0
     if (!nodeDegrees) {
-      return 0
+      return 0;
     }
 
     switch (type) {
@@ -2782,9 +2777,9 @@ export default abstract class AbstractGraph extends EventEmitter implements IAbs
     const stackData = data
       ? clone(data)
       : {
-        before: {},
-        after: clone(this.save()),
-      };
+          before: {},
+          after: clone(this.save()),
+        };
 
     if (stackType === 'redo') {
       this.redoStack.push({

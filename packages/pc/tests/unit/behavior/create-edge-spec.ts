@@ -29,6 +29,11 @@ describe('create-edge', () => {
       modes: {
         default: ['create-edge'],
       },
+      layout: {
+        type: 'force',
+        linkDistance: 120,
+        preventOverlap: true,
+      },
       defaultEdge: {
         style: {
           stroke: '#f00',
@@ -258,7 +263,7 @@ describe('create-edge', () => {
 
     graph.destroy();
   });
-  xit('create edge width stack', () => {
+  it('create edge width stack', () => {
     const toolbar = new G6.ToolBar();
     const graph: Graph = new Graph({
       container: div,
